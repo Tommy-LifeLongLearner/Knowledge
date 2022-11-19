@@ -4,60 +4,64 @@
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" href="./css/index.css">
     <title>Knowledge</title>
   </head>
   <body>
 
     <main>
-      <h1>Folders</h1>
       <section id="folders">
-        <div>
+        <header>
+          <input type="text" name="folder-title">
+          <button>Add</button>
+        </header>
+        <div class="folder">
           <h2 class="folder-title">HTML</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">CSS</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">JavaScript</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">TypeScript</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">Node JS</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">React JS</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">Bootstrap</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">SQL</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">MySQL</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">SQLite</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">Postgres SQL</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">C</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">C++</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">Java</h2>
         </div>
-        <div>
+        <div class="folder">
           <h2 class="folder-title">Python</h2>
         </div>
       </section>
-      <section id="topics">
+      <section id="topics" hidden>
         <section class="category">
           <h2 class="category-title">HTML Tutorial</h2>
           <ul class="topics">
