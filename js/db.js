@@ -3,6 +3,10 @@ const fs = require('fs');
 const { ipcRenderer } = require('electron');
 let db = null;
 
+const currentState = {
+  folderID: null
+};
+
 // promisify the sqlite db open
 function dbOpen(dbPath) {
   return new Promise((resolve, reject) => {
@@ -211,26 +215,128 @@ function createFolderElements(folders) {
   });
 }
 
+function createTopicElements(topics) {
+  const topicsHTML = topics.map(topic => {
+    const newTopicElement = document.createElement("LI");
+    newTopicElement.dataset.id = topic.id;
+    newTopicElement.className = "topic-title";
+    newTopicElement.textContent = topic.name;
+  });
+
+  return topicsHTML.join("");
+}
+
+async function createCategoryElement(category, topics) {
+  const newCategoryElement = document.createElement("SECTION");
+  newCategoryElement.dataset.id = category.id;
+  newCategoryElement.className = "category";
+  newCategoryElement.innerHTML = `
+    <h2 class="category-title">${category.name}</h2>
+    <ul class="topics">
+      ${topics ? createTopicElements(topics) : ""}
+    </ul>
+  `;
+  document.querySelector("#topics").appendChild(newCategoryElement);
+}
+
+function createCategoryElements(categories) {
+  categories.forEach(async category => {
+    try {
+      const result = await dbAll(`SELECT * FROM Topics WHERE categoryID = ${category.id};`);
+      createCategoryElement(category, result);
+    }catch(err) {
+      console.log(err);
+    }
+  });
+}
+
 document.querySelector("#folders .add-button").onclick = async function() {
-  const folderName = document.querySelector("#folders [name=folder-name]").value;
+  const folderNameElement = document.querySelector("#folders [name=folder-name]");
   try {
     const result = await dbInsert("Folders", {
-      name: folderName
+      name: folderNameElement.value
     });
     createFolderElement({
       id: result.lastID,
-      name: folderName
+      name: folderNameElement.value
     });
+    folderNameElement.value = "";
     console.log(result);
   }catch(err) {
     console.log(err);
   }
 };
 
+document.querySelector("#folders").onclick = async function(e) {
+  let folderElement = e.target.closest(".folder");
+  if(folderElement) {
+    const folderID = folderElement.dataset.id;
+    const result = await dbAll(`SELECT * FROM Categories WHERE folderID = ${folderID};`);
+    createCategoryElements(result);
+    this.classList.add("hidden");
+    currentState.folderID = folderID;
+    console.log(result);
+  }
+};
+
+document.querySelector("#topics .add-button").onclick = async function() {
+  const categoryNameElement = document.querySelector("#topics [name=category-name]");
+  try {
+    const result = await dbInsert("Categories", {
+      name: categoryNameElement.value,
+      folderID: currentState.folderID
+    });
+    createCategoryElement({
+      id: result.lastID,
+      name: categoryNameElement.value
+    });
+    categoryNameElement.value = "";
+    console.log(result);
+  }catch(err) {
+    console.log(err);
+  }
+};
+
+
 window.onload = async function() {
   await prepareDB();
   // try {
   //   const result = await dbAll(`SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;`);
+  //   console.log(result);
+  // }catch(err) {
+  //   console.log(err);
+  // }
+
+  // try {
+  //   const result = await dbRun("DELETE FROM Categories;");
+  //   console.log(result);
+  // }catch(err) {
+  //   console.log(err);
+  // }
+
+  // try {
+  //   const result = await dbInsert("Categories", {
+  //     name: "HTML Tutorial",
+  //     folderID: 1
+  //   });
+  //   console.log(result);
+  // }catch(err) {
+  //   console.log(err);
+  // }
+  // try {
+  //   const result = await dbInsert("Categories", {
+  //     name: "HTML Forms",
+  //     folderID: 1
+  //   });
+  //   console.log(result);
+  // }catch(err) {
+  //   console.log(err);
+  // }
+  // try {
+  //   const result = await dbInsert("Categories", {
+  //     name: "HTML Graphics",
+  //     folderID: 1
+  //   });
   //   console.log(result);
   // }catch(err) {
   //   console.log(err);

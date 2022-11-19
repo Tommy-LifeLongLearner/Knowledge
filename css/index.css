@@ -37,3 +37,16 @@ html, body, main {
   margin: 5px;
   cursor: pointer;
 }
+
+#topics {
+  width: 300px;
+}
+
+.category {
+  cursor: pointer;
+  padding: 4px;
+}
+
+.hidden {
+  display: none !important;
+}
