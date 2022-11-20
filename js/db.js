@@ -231,7 +231,7 @@ async function createCategoryElement(category, topics) {
   newCategoryElement.dataset.id = category.id;
   newCategoryElement.className = "category";
   newCategoryElement.innerHTML = `
-    <h2 class="category-title">${category.name}</h2>
+    <h2 class="category-title"><span>${category.name}</span><button class="fa fa-plus-circle"></button><button class="fa fa-trash-o"></button></h2>
     <ul class="topics">
       ${topics ? createTopicElements(topics) : ""}
     </ul>
@@ -276,6 +276,38 @@ document.querySelector("#folders").onclick = async function(e) {
     this.classList.add("hidden");
     currentState.folderID = folderID;
     console.log(result);
+  }
+};
+
+async function showConfirmDialog(msg) {
+  const result = await ipcRenderer.invoke('show-confirm-dialog', msg);
+  return Boolean(result.response);
+}
+
+async function deleteCategory(categoryID) {
+  const isYes = await showConfirmDialog("Are you sure you want to delete this category?");
+  if(isYes) {
+    try {
+      const result = await dbDelete("Categories", categoryID);
+      return result.changes === 1;
+    }catch(err) {
+      console.log(err);
+      return false;
+    }
+  }
+}
+
+document.querySelector("#topics").onclick = async function(e) {
+  const categoryTitleElement = e.target.closest(".category-title");
+  const categoryElement = categoryTitleElement?.closest(".category");
+  if(categoryTitleElement) {
+    const isDelete = e.target.className.match("fa-trash");
+    const isAdd = e.target.className.match("fa-trash");
+    if(isDelete) {
+      const categoryID = categoryElement.dataset.id;
+      const wasDeleted = await deleteCategory(categoryID);
+      wasDeleted && categoryElement.remove();
+    }
   }
 };
 

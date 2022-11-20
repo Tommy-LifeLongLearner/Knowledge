@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require('electron');
-const { ipcMain } = require("electron");
+const { ipcMain, dialog } = require("electron");
 const gotTheLock = app.requestSingleInstanceLock();
 
 const createWindow = () => {
@@ -22,6 +22,14 @@ const createWindow = () => {
       appDataPath: app.getPath("appData"),
       appName: app.getName()
     };
+  })
+
+  ipcMain.handle('show-confirm-dialog', async (event, ...args) => {
+    return await dialog.showMessageBox({
+      message: args[0],
+      type: "question",
+      buttons: ["No", "Yes"]
+    });
   })
 }
 

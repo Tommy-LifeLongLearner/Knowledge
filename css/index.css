@@ -39,12 +39,22 @@ html, body, main {
 }
 
 #topics {
-  width: 300px;
+  width: 320px;
 }
 
 .category {
   cursor: pointer;
   padding: 4px;
+}
+
+.category-title > span {
+  display: inline-block;
+  width: 262px;
+}
+
+.category-title > button {
+  width: 25px;
+  cursor: pointer;
 }
 
 .hidden {
