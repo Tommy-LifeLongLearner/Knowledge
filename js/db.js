@@ -215,6 +215,14 @@ function createFolderElements(folders) {
   });
 }
 
+function createTopicElement(topic, categoryElement) {
+  const newTopicElement = document.createElement("LI");
+  newTopicElement.dataset.id = topic.id;
+  newTopicElement.className = "topic-title";
+  newTopicElement.textContent = topic.name;
+  categoryElement.querySelector(".topics").appendChild(newTopicElement);
+}
+
 function createTopicElements(topics) {
   const topicsHTML = topics.map(topic => {
     const newTopicElement = document.createElement("LI");
@@ -243,6 +251,7 @@ function createCategoryElements(categories) {
   categories.forEach(async category => {
     try {
       const result = await dbAll(`SELECT * FROM Topics WHERE categoryID = ${category.id};`);
+      console.log(result);
       createCategoryElement(category, result);
     }catch(err) {
       console.log(err);
@@ -302,11 +311,26 @@ document.querySelector("#topics").onclick = async function(e) {
   const categoryElement = categoryTitleElement?.closest(".category");
   if(categoryTitleElement) {
     const isDelete = e.target.className.match("fa-trash");
-    const isAdd = e.target.className.match("fa-trash");
+    const isAdd = e.target.className.match("fa-plus");
     if(isDelete) {
       const categoryID = categoryElement.dataset.id;
       const wasDeleted = await deleteCategory(categoryID);
       wasDeleted && categoryElement.remove();
+    }else if(isAdd) {
+      const topicName = document.querySelector("#topics [name=category-name]");
+      try {
+        const result = await dbInsert("Topics", {
+          name: topicName.value,
+          categoryID: categoryElement.dataset.id
+        });
+        createTopicElement({
+          id: result.lastID,
+          name: topicName.value
+        }, categoryElement);
+        console.log(result);
+      }catch(err) {
+        console.log(err);
+      }
     }
   }
 };
