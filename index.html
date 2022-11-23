@@ -10,60 +10,61 @@
   </head>
   <body>
 
-    <main>
-      <section id="folders">
-        <header>
-          <input type="text" name="folder-name">
-          <button class="add-button">Add</button>
-        </header>
-        <!-- <div class="folder">
-          <h2 class="folder-title">HTML</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">CSS</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">JavaScript</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">TypeScript</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">Node JS</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">React JS</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">Bootstrap</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">SQL</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">MySQL</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">SQLite</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">Postgres SQL</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">C</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">C++</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">Java</h2>
-        </div>
-        <div class="folder">
-          <h2 class="folder-title">Python</h2>
-        </div> -->
-      </section>
+    <section id="folders">
+      <header>
+        <input type="text" name="folder-name">
+        <button class="add-button">Add</button>
+      </header>
+      <!-- <div class="folder">
+        <h2 class="folder-title">HTML</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">CSS</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">JavaScript</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">TypeScript</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">Node JS</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">React JS</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">Bootstrap</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">SQL</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">MySQL</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">SQLite</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">Postgres SQL</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">C</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">C++</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">Java</h2>
+      </div>
+      <div class="folder">
+        <h2 class="folder-title">Python</h2>
+      </div> -->
+    </section>
+    <aside class="hidden">
       <section id="topics">
         <header>
+          <button class="fa fa-angle-left return-button"></button>
           <input type="text" name="category-name">
           <button class="add-button">Add</button>
         </header>
@@ -98,8 +99,14 @@
           </ul>
         </section> -->
       </section>
+    </aside>
+    <main class="hidden">
+      <div id="articles">
+      </div>
+      <textarea type="text" name="article-content" rows="1"></textarea>
     </main>
 
     <script src="./js/db.js"></script>
+
   </body>
 </html>

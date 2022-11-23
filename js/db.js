@@ -1,10 +1,48 @@
 const sqlite3 = require('sqlite3');
 const fs = require('fs');
 const { ipcRenderer } = require('electron');
+const showdown  = require('showdown');
+const converter = new showdown.Converter({
+  backslashEscapesHTMLTags: true,
+  completeHTMLDocument: true,
+  disableForced4SpacesIndentedSublists: true,
+  ellipsis: true,
+  emoji: true,
+  encodeEmails: true,
+  excludeTrailingPunctuationFromURLs: true,
+  ghCodeBlocks: true,
+  ghCompatibleHeaderId: true,
+  ghMentions: true,
+  ghMentionsLink: true,
+  headerLevelStart: true,
+  literalMidWordAsterisks: true,
+  literalMidWordUnderscores: true,
+  metadata: true,
+  noHeaderId: true,
+  omitExtraWLInCodeBlocks: true,
+  openLinksInNewWindow: true,
+  parseImgDimensions: true,
+  prefixHeaderId: true,
+  rawHeaderId: true,
+  rawPrefixHeaderId: true,
+  requireSpaceBeforeHeadingText: true,
+  simpleLineBreaks: true,
+  simplifiedAutoLink: true,
+  smartIndentationFix: true,
+  smoothLivePreview: true,
+  splitAdjacentBlockquotes: true,
+  strikethrough: true,
+  tables: true,
+  tablesHeaderId: true,
+  tasklists: true,
+  underline: true
+});
+
 let db = null;
 
 const currentState = {
-  folderID: null
+  folderID: null,
+  topicID: null
 };
 
 // promisify the sqlite db open
@@ -223,14 +261,8 @@ function createTopicElement(topic, categoryElement) {
   categoryElement.querySelector(".topics").appendChild(newTopicElement);
 }
 
-function createTopicElements(topics) {
-  const topicsHTML = topics.map(topic => {
-    const newTopicElement = document.createElement("LI");
-    newTopicElement.dataset.id = topic.id;
-    newTopicElement.className = "topic-title";
-    newTopicElement.textContent = topic.name;
-  });
-
+function createTopicsHTML(topics) {
+  const topicsHTML = topics.map(topic => `<li data-id=${topic.id} class="topic-title">${topic.name}</li>`);
   return topicsHTML.join("");
 }
 
@@ -241,7 +273,7 @@ async function createCategoryElement(category, topics) {
   newCategoryElement.innerHTML = `
     <h2 class="category-title"><span>${category.name}</span><button class="fa fa-plus-circle"></button><button class="fa fa-trash-o"></button></h2>
     <ul class="topics">
-      ${topics ? createTopicElements(topics) : ""}
+      ${topics ? createTopicsHTML(topics) : ""}
     </ul>
   `;
   document.querySelector("#topics").appendChild(newCategoryElement);
@@ -250,7 +282,7 @@ async function createCategoryElement(category, topics) {
 function createCategoryElements(categories) {
   categories.forEach(async category => {
     try {
-      const result = await dbAll(`SELECT * FROM Topics WHERE categoryID = ${category.id};`);
+      const result = await dbAll(`SELECT * FROM Topics WHERE categoryID = ${category.id} ORDER BY name;`);
       console.log(result);
       createCategoryElement(category, result);
     }catch(err) {
@@ -280,11 +312,17 @@ document.querySelector("#folders").onclick = async function(e) {
   let folderElement = e.target.closest(".folder");
   if(folderElement) {
     const folderID = folderElement.dataset.id;
-    const result = await dbAll(`SELECT * FROM Categories WHERE folderID = ${folderID};`);
-    createCategoryElements(result);
+    if(currentState.folderID !== folderID) {
+      console.log("Loading categories and topics...");
+      document.querySelectorAll("#topics .category").forEach(category => category.remove());
+      const result = await dbAll(`SELECT * FROM Categories WHERE folderID = ${folderID} ORDER BY NAME;`);
+      createCategoryElements(result);
+      currentState.folderID = folderID;
+      console.log(result);
+    }
+
     this.classList.add("hidden");
-    currentState.folderID = folderID;
-    console.log(result);
+    document.querySelector("aside").classList.remove("hidden");
   }
 };
 
@@ -306,9 +344,27 @@ async function deleteCategory(categoryID) {
   }
 }
 
+function createArticleElement(article) {
+  const newArticleElement = document.createElement("ARTICLE");
+  newArticleElement.dataset.id = article.id;
+  newArticleElement.innerHTML = `
+    ${converter.makeHtml(article.content)}
+  `;
+  // ${article.content.split("\n").map(line => line ? `<pre>${line}</pre>` : "<br>").join("")}
+  // ${article.content.replace(/\n/g, "<br>").trim()}
+  document.querySelector("#articles").appendChild(newArticleElement);
+}
+
+function createArticleElements(articles) {
+  articles.forEach(article => {
+    createArticleElement(article);
+  });
+}
+
 document.querySelector("#topics").onclick = async function(e) {
   const categoryTitleElement = e.target.closest(".category-title");
   const categoryElement = categoryTitleElement?.closest(".category");
+  const topicTitleElement = e.target.closest(".topic-title");
   if(categoryTitleElement) {
     const isDelete = e.target.className.match("fa-trash");
     const isAdd = e.target.className.match("fa-plus");
@@ -323,10 +379,26 @@ document.querySelector("#topics").onclick = async function(e) {
           name: topicName.value,
           categoryID: categoryElement.dataset.id
         });
+        console.log(result);
         createTopicElement({
           id: result.lastID,
           name: topicName.value
         }, categoryElement);
+        topicName.value = "";
+        console.log(result);
+      }catch(err) {
+        console.log(err);
+      }
+    }
+  }else if(topicTitleElement) {
+    const topicID = topicTitleElement.dataset.id;
+    document.querySelector("#articles").innerHTML = "";
+    if(currentState.topicID !== topicID) {
+      try {
+        const result = await dbAll(`SELECT * FROM Articles WHERE topicID = ${topicID}`);
+        createArticleElements(result);
+        currentState.topicID = topicID;
+        document.querySelector("main").classList.remove("hidden");
         console.log(result);
       }catch(err) {
         console.log(err);
@@ -334,6 +406,12 @@ document.querySelector("#topics").onclick = async function(e) {
     }
   }
 };
+
+document.querySelector("#topics .return-button").onclick = function() {
+  document.querySelector("#folders").classList.remove("hidden");
+  document.querySelector("aside").classList.add("hidden");
+  document.querySelector("main").classList.add("hidden");
+}
 
 document.querySelector("#topics .add-button").onclick = async function() {
   const categoryNameElement = document.querySelector("#topics [name=category-name]");
@@ -353,6 +431,34 @@ document.querySelector("#topics .add-button").onclick = async function() {
   }
 };
 
+document.querySelector("main [name=article-content]").onkeydown = async function(e) {
+  if(e.key === "Enter" && e.shiftKey) {
+    this.rows += 1;
+  }else if(e.key === "Enter") {
+    e.preventDefault();
+    const articleContent = document.querySelector("main [name=article-content]");
+    try {
+      const result = await dbInsert("Articles", {
+        content: articleContent.value,
+        topicID: currentState.topicID
+      });
+      console.log(result);
+      createArticleElement({
+        id: result.lastID,
+        content: articleContent.value
+      });
+      articleContent.value = "";
+    }catch(err) {
+      console.log(err);
+    }
+  }
+};
+
+document.querySelector("main [name=article-content]").onkeyup = async function(e) {
+  if(e.key === "Backspace" || e.key === "Delete") {
+    this.rows = this.value.split("\n").length;
+  }
+};
 
 window.onload = async function() {
   await prepareDB();
