@@ -100,7 +100,9 @@ main > textarea {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 40px;
+  min-height: 40px;
+  max-height: 300px;
+  overflow-y: scroll;
 }
 
 #articles {
@@ -114,14 +116,17 @@ article {
   padding: 10px;
 }
 
-article .delete-button {
+article .top-corner-buttons {
   position: absolute;
   top: 4px;
   right: 4px;
+}
+
+article .top-corner-buttons button {
   opacity: 0.5;
 }
 
-article .delete-button:hover {
+article .top-corner-buttons button:hover {
   opacity: 1;
 }
 

@@ -40,12 +40,16 @@ const converter = new showdown.Converter({
 
 const hljs = require('highlight.js');
 
+
 let db = null;
 
 const currentState = {
   folderID: null,
-  topicID: null
+  topicID: null,
+  isEditingArticle: null,
+  editedArticle: null
 };
+const articleContentInputElement = document.querySelector("main [name=article-content]");
 
 // promisify the sqlite db open
 function dbOpen(dbPath) {
@@ -351,7 +355,10 @@ function createArticleElement(article) {
   newArticleElement.dataset.id = article.id;
   // convert the markdown into html
   newArticleElement.innerHTML = `
-    <button class="fa fa-trash-o delete-button"></button>
+    <div class="top-corner-buttons">
+      <button class="fa fa-edit edit-button"></button>
+      <button class="fa fa-trash-o delete-button"></button>
+    </div>
     ${converter.makeHtml(article.content)}
   `;
   // highlight the html code elements
@@ -439,20 +446,40 @@ document.querySelector("main [name=article-content]").onkeydown = async function
     this.rows += 1;
   }else if(e.key === "Enter") {
     e.preventDefault();
-    const articleContent = document.querySelector("main [name=article-content]");
-    try {
-      const result = await dbInsert("Articles", {
-        content: articleContent.value,
-        topicID: currentState.topicID
-      });
-      console.log({articleInsertion: result});
-      createArticleElement({
-        id: result.lastID,
-        content: articleContent.value
-      });
-      articleContent.value = "";
-    }catch(err) {
-      console.log(err);
+    if(currentState.isEditingArticle) {
+      const articleID = currentState.editedArticle.dataset.id;
+      try {
+        const result = await dbUpdate("Articles", articleID, {
+          content: this.value
+        });
+        createArticleElement({
+          id: articleID,
+          content: this.value
+        });
+        currentState.editedArticle.replaceWith(document.querySelector("#articles article:last-child"));
+        currentState.isEditingArticle = false;
+        currentState.editedArticle = null;
+        this.value = "";
+        this.rows = 1;
+        console.log({articleEdititng: result});
+      }catch(err) {
+        console.log(err);
+      }
+    }else {
+      try {
+        const result = await dbInsert("Articles", {
+          content: articleContentInputElement.value,
+          topicID: currentState.topicID
+        });
+        console.log({articleInsertion: result});
+        createArticleElement({
+          id: result.lastID,
+          content: articleContentInputElement.value
+        });
+        articleContentInputElement.value = "";
+      }catch(err) {
+        console.log(err);
+      }
     }
   }
 };
@@ -465,13 +492,24 @@ document.querySelector("main [name=article-content]").onkeyup = async function(e
 
 document.querySelector("#articles").onclick = async function(e) {
   const articleElement = e.target.closest("article");
-  if(e.target.className.match("delete-button")) {
-    console.log("delete click");
+  const articleID = articleElement?.dataset.id;
+  const isDelete = e.target.className.match("delete-button");
+  const isEdit = e.target.className.match("edit-button");
+  if(isDelete) {
     try {
-      const articleID = articleElement.dataset.id;
       const result = await dbDelete("Articles", articleID);
       console.log({articleDeletion: result});
       articleElement.remove();
+    }catch(err) {
+      console.log(err);
+    }
+  }else if(isEdit) {
+    try {
+      const result = await dbAll(`SELECT * FROM Articles WHERE id = ${articleID}`);
+      articleContentInputElement.rows = result[0].content.split("\n").length;
+      articleContentInputElement.value = result[0].content;
+      currentState.isEditingArticle = true;
+      currentState.editedArticle = articleElement;
     }catch(err) {
       console.log(err);
     }
