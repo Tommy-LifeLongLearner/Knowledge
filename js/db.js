@@ -285,8 +285,8 @@ function createCategoryElements(categories) {
   categories.forEach(async category => {
     try {
       const result = await dbAll(`SELECT * FROM Topics WHERE categoryID = ${category.id} ORDER BY name;`);
-      console.log(result);
       createCategoryElement(category, result);
+      console.log({topics: result});
     }catch(err) {
       console.log(err);
     }
@@ -304,7 +304,7 @@ document.querySelector("#folders .add-button").onclick = async function() {
       name: folderNameElement.value
     });
     folderNameElement.value = "";
-    console.log(result);
+    console.log({folderInsertion: result});
   }catch(err) {
     console.log(err);
   }
@@ -320,7 +320,7 @@ document.querySelector("#folders").onclick = async function(e) {
       const result = await dbAll(`SELECT * FROM Categories WHERE folderID = ${folderID} ORDER BY NAME;`);
       createCategoryElements(result);
       currentState.folderID = folderID;
-      console.log(result);
+      console.log({categories: result});
     }
 
     this.classList.add("hidden");
@@ -349,17 +349,13 @@ async function deleteCategory(categoryID) {
 function createArticleElement(article) {
   const newArticleElement = document.createElement("ARTICLE");
   newArticleElement.dataset.id = article.id;
+  // convert the markdown into html
   newArticleElement.innerHTML = `
+    <button class="fa fa-trash-o delete-button"></button>
     ${converter.makeHtml(article.content)}
   `;
-  // converter.makeHtml(article.content) 
+  // highlight the html code elements
   newArticleElement.querySelectorAll("code").forEach(code => hljs.highlightElement(code));
-  console.log(newArticleElement.innerHTML);
-  // newArticleElement.querySelectorAll("code").forEach(code => code.innerHTML = console.log(code.innerHTML) || hljs.highlightAuto(code.innerHTML).value);
-  // hljs.highlightAll();
-  // console.log(newArticleElement.querySelectorAll("code"));
-  // ${article.content.split("\n").map(line => line ? `<pre>${line}</pre>` : "<br>").join("")}
-  // ${article.content.replace(/\n/g, "<br>").trim()}
   document.querySelector("#articles").appendChild(newArticleElement);
 }
 
@@ -387,27 +383,26 @@ document.querySelector("#topics").onclick = async function(e) {
           name: topicName.value,
           categoryID: categoryElement.dataset.id
         });
-        console.log(result);
         createTopicElement({
           id: result.lastID,
           name: topicName.value
         }, categoryElement);
         topicName.value = "";
-        console.log(result);
+        console.log({topicInsertion: result});
       }catch(err) {
         console.log(err);
       }
     }
   }else if(topicTitleElement) {
     const topicID = topicTitleElement.dataset.id;
-    document.querySelector("#articles").innerHTML = "";
     if(currentState.topicID !== topicID) {
+      document.querySelector("#articles").innerHTML = "";
       try {
         const result = await dbAll(`SELECT * FROM Articles WHERE topicID = ${topicID}`);
         createArticleElements(result);
         currentState.topicID = topicID;
         document.querySelector("main").classList.remove("hidden");
-        console.log(result);
+        console.log({articles: result});
       }catch(err) {
         console.log(err);
       }
@@ -433,7 +428,7 @@ document.querySelector("#topics .add-button").onclick = async function() {
       name: categoryNameElement.value
     });
     categoryNameElement.value = "";
-    console.log(result);
+    console.log({categoryInsertion: result});
   }catch(err) {
     console.log(err);
   }
@@ -450,7 +445,7 @@ document.querySelector("main [name=article-content]").onkeydown = async function
         content: articleContent.value,
         topicID: currentState.topicID
       });
-      console.log(result);
+      console.log({articleInsertion: result});
       createArticleElement({
         id: result.lastID,
         content: articleContent.value
@@ -468,53 +463,27 @@ document.querySelector("main [name=article-content]").onkeyup = async function(e
   }
 };
 
+document.querySelector("#articles").onclick = async function(e) {
+  const articleElement = e.target.closest("article");
+  if(e.target.className.match("delete-button")) {
+    console.log("delete click");
+    try {
+      const articleID = articleElement.dataset.id;
+      const result = await dbDelete("Articles", articleID);
+      console.log({articleDeletion: result});
+      articleElement.remove();
+    }catch(err) {
+      console.log(err);
+    }
+  }
+};
+
 window.onload = async function() {
   await prepareDB();
-  // try {
-  //   const result = await dbAll(`SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;`);
-  //   console.log(result);
-  // }catch(err) {
-  //   console.log(err);
-  // }
-
-  // try {
-  //   const result = await dbRun("DELETE FROM Categories;");
-  //   console.log(result);
-  // }catch(err) {
-  //   console.log(err);
-  // }
-
-  // try {
-  //   const result = await dbInsert("Categories", {
-  //     name: "HTML Tutorial",
-  //     folderID: 1
-  //   });
-  //   console.log(result);
-  // }catch(err) {
-  //   console.log(err);
-  // }
-  // try {
-  //   const result = await dbInsert("Categories", {
-  //     name: "HTML Forms",
-  //     folderID: 1
-  //   });
-  //   console.log(result);
-  // }catch(err) {
-  //   console.log(err);
-  // }
-  // try {
-  //   const result = await dbInsert("Categories", {
-  //     name: "HTML Graphics",
-  //     folderID: 1
-  //   });
-  //   console.log(result);
-  // }catch(err) {
-  //   console.log(err);
-  // }
   try {
     const result = await dbAll(`SELECT * FROM Folders ORDER BY name;`);
     createFolderElements(result);
-    console.log(result);
+    console.log({folders: result});
   }catch(err) {
     console.log(err);
   }
