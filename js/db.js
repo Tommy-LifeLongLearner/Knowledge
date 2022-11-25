@@ -38,6 +38,8 @@ const converter = new showdown.Converter({
   underline: true
 });
 
+const hljs = require('highlight.js');
+
 let db = null;
 
 const currentState = {
@@ -350,6 +352,12 @@ function createArticleElement(article) {
   newArticleElement.innerHTML = `
     ${converter.makeHtml(article.content)}
   `;
+  // converter.makeHtml(article.content) 
+  newArticleElement.querySelectorAll("code").forEach(code => hljs.highlightElement(code));
+  console.log(newArticleElement.innerHTML);
+  // newArticleElement.querySelectorAll("code").forEach(code => code.innerHTML = console.log(code.innerHTML) || hljs.highlightAuto(code.innerHTML).value);
+  // hljs.highlightAll();
+  // console.log(newArticleElement.querySelectorAll("code"));
   // ${article.content.split("\n").map(line => line ? `<pre>${line}</pre>` : "<br>").join("")}
   // ${article.content.replace(/\n/g, "<br>").trim()}
   document.querySelector("#articles").appendChild(newArticleElement);

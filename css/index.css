@@ -107,3 +107,7 @@ main > textarea {
   height: calc(100% - 40px);
   overflow-y: scroll;
 }
+
+code {
+  margin-bottom: 5px !important;
+}

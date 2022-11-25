@@ -13,6 +13,7 @@
     "electron": "^21.2.3"
   },
   "dependencies": {
+    "highlight.js": "^11.6.0",
     "showdown": "^2.1.0",
     "sqlite3": "^5.1.2"
   }
