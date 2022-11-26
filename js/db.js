@@ -39,7 +39,7 @@ const converter = new showdown.Converter({
 });
 
 const hljs = require('highlight.js');
-
+const utf8 = require('utf8');
 
 let db = null;
 
@@ -343,29 +343,30 @@ async function showConfirmDialog(msg) {
 async function deleteCategory(categoryID) {
   try {
     const isYes = await showConfirmDialog("Are you sure you want to delete this category?");
-  }catch(err) {
-    throw err;
-  }
-  if(isYes) {
     try {
       const result = await dbDelete("Categories", categoryID);
       return result.changes === 1;
     }catch(err) {
       throw err;
     }
+  }catch(err) {
+    throw err;
   }
 }
 
 function createArticleElement(article) {
   const newArticleElement = document.createElement("ARTICLE");
   newArticleElement.dataset.id = article.id;
+  // const content = fromHex(article.content);
+  const content = hexToUtf8(article.content);
+  console.log(article.content);
   // convert the markdown into html
   newArticleElement.innerHTML = `
     <div class="top-corner-buttons">
       <button class="fa fa-edit edit-button"></button>
       <button class="fa fa-trash-o delete-button"></button>
     </div>
-    ${converter.makeHtml(article.content)}
+    ${converter.makeHtml(content)}
   `;
   // highlight the html code elements
   newArticleElement.querySelectorAll("code").forEach(code => hljs.highlightElement(code));
@@ -486,14 +487,16 @@ document.querySelector("main [name=article-content]").onkeydown = async function
       }
     }else {
       try {
+        // const hexContent = toHex(articleContentInputElement.value);
+        const hexContent = utf8ToHex(articleContentInputElement.value);
         const result = await dbInsert("Articles", {
-          content: articleContentInputElement.value,
+          content: hexContent,
           topicID: currentState.topicID
         });
         console.log({articleInsertion: result});
         createArticleElement({
           id: result.lastID,
-          content: articleContentInputElement.value
+          content: hexContent
         });
         articleContentInputElement.value = "";
       }catch(err) {
@@ -579,6 +582,53 @@ async function showOverlay(value="") {
     }
   });
 }
+
+function utf8ToHex(str) {
+  str = utf8.encode(str);
+  let hex = "";
+
+  // remove \u0000 padding from either side
+  str = str.replace(/^(?:\u0000)*/,'');
+  str = str.split("").reverse().join("");
+  str = str.replace(/^(?:\u0000)*/,'');
+  str = str.split("").reverse().join("");
+
+  for(let i = 0; i < str.length; i++) {
+    let code = str.charCodeAt(i);
+    let n = code.toString(16);
+    hex += n.length < 2 ? '0' + n : n;
+  }
+
+  return "0x" + hex;
+};
+
+function isHexStrict(hex) {
+  return ((typeof hex === 'string' || typeof hex === 'number') && /^(-)?0x[0-9a-f]*$/i.test(hex));
+};
+
+function hexToUtf8(hex) {
+  if (!isHexStrict(hex))
+    throw new Error('The parameter "'+ hex +'" must be a valid HEX string.');
+
+  let str = "";
+  let code = 0;
+  hex = hex.replace(/^0x/i,'');
+
+  // remove 00 padding from either side
+  hex = hex.replace(/^(?:00)*/,'');
+  hex = hex.split("").reverse().join("");
+  hex = hex.replace(/^(?:00)*/,'');
+  hex = hex.split("").reverse().join("");
+
+  let l = hex.length;
+
+  for (let i = 0;i < l;i += 2) {
+    code = parseInt(hex.slice(i, i + 2), 16);
+    str += String.fromCharCode(code);
+  }
+
+  return utf8.decode(str);
+};
 
 window.onload = async function() {
   try {
