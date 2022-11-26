@@ -537,9 +537,38 @@ document.querySelector("#articles").onclick = async function(e) {
       console.log(err);
     }
   }else if(isTopicRename) {
-
+    try {
+      const topicElement = document.querySelector(`#topics [data-id="${currentState.topicID}"]`);
+      const result = await showOverlay(topicElement.textContent);
+      console.log(result);
+      const topicNewName = document.querySelector("#overlay input").value;
+      const renameResult = await dbUpdate("Topics", currentState.topicID, {
+        name: topicNewName
+      });
+      document.querySelector("#articles h1").textContent = topicElement.textContent = topicNewName;
+      console.log({topicRename: renameResult});
+    }catch(err) {
+      console.log(err);
+    }
   }
 };
+
+async function showOverlay(value="") {
+  document.querySelector("#overlay").classList.remove("hidden");
+  document.querySelector("#overlay input").value = value;
+  return new Promise((resolve, reject) => {
+    document.querySelector("#overlay button").onclick = function() {
+      document.querySelector("#overlay").classList.add("hidden");
+      reject("Canceled");
+    }
+    document.querySelector("#overlay input").onkeyup = function(e) {
+      if(e.key === "Enter") {
+        document.querySelector("#overlay").classList.add("hidden");
+        resolve(this.value);
+      }
+    }
+  });
+}
 
 window.onload = async function() {
   await prepareDB();
