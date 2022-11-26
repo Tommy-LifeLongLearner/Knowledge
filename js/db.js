@@ -81,7 +81,7 @@ async function dbTableCreate(tableName, fields) {
     return result;
   }catch(err) {
     console.log(`Error creating ${tableName} table!`);
-    return err;
+    throw err;
   }
 }
 
@@ -105,7 +105,7 @@ async function prepareDB(cb) {
         await dbOpen(`${dataPath}/data/all.db`);
         console.log(`Successfully created the database file all.db`);
       }catch(err) {
-        console.log(err);
+        throw err;
       }
 
       try {
@@ -113,7 +113,7 @@ async function prepareDB(cb) {
           name: "TEXT"
         });
       }catch(err) {
-        console.log(err);
+        throw err;
       }
 
       try {
@@ -122,7 +122,7 @@ async function prepareDB(cb) {
           folderID: "INTEGER, FOREIGN KEY (folderID) REFERENCES Folders(id)"
         });
       }catch(err) {
-        console.log(err);
+        throw err;
       }
 
       try {
@@ -131,7 +131,7 @@ async function prepareDB(cb) {
           categoryID: "INTEGER, FOREIGN KEY (categoryID) REFERENCES Categories(id)"
         });
       }catch(err) {
-        console.log(err);
+        throw err;
       }
 
       try {
@@ -140,7 +140,7 @@ async function prepareDB(cb) {
           topicId: "INTEGER, FOREIGN KEY (topicId) REFERENCES Topics(id)"
         });
       }catch(err) {
-        console.log(err);
+        throw err;
       }
 
       try {
@@ -149,7 +149,7 @@ async function prepareDB(cb) {
           articleID: "INTEGER, FOREIGN KEY (articleID) REFERENCES Articles(id)"
         });
       }catch(err) {
-        console.log(err);
+        throw err;
       }
 
     }else {
@@ -168,7 +168,6 @@ async function dbQuery(type, query) {
       }else {
         resolve(type === "run" ? this : res);
       }
-      // type === "run" && db.finalize();
     });
   });
 }
@@ -199,7 +198,7 @@ async function dbInsert(tableName, data) {
     return result;
   }catch(err) {
     // console.log(`Error inserting into '${tableName}' table!`, data);
-    return err;
+    throw err;
   }
 }
 
@@ -227,7 +226,7 @@ async function dbUpdate(tableName, rowID, data) {
     return result;
   }catch(err) {
     // console.log(`Error inserting into '${tableName}' table!`, data);
-    return err;
+    throw err;
   }
 }
 
@@ -239,7 +238,7 @@ async function dbDelete(tableName, rowID) {
     return result;
   }catch(err) {
     // console.log(`Error inserting into '${tableName}' table!`, data);
-    return err;
+    throw err;
   }
 }
 
@@ -272,7 +271,7 @@ function createTopicsHTML(topics) {
   return topicsHTML.join("");
 }
 
-async function createCategoryElement(category, topics) {
+function createCategoryElement(category, topics) {
   const newCategoryElement = document.createElement("SECTION");
   newCategoryElement.dataset.id = category.id;
   newCategoryElement.className = "category";
@@ -333,19 +332,26 @@ document.querySelector("#folders").onclick = async function(e) {
 };
 
 async function showConfirmDialog(msg) {
-  const result = await ipcRenderer.invoke('show-confirm-dialog', msg);
-  return Boolean(result.response);
+  try {
+    const result = await ipcRenderer.invoke('show-confirm-dialog', msg);
+    return Boolean(result.response);
+  }catch(err) {
+    throw err;
+  }
 }
 
 async function deleteCategory(categoryID) {
-  const isYes = await showConfirmDialog("Are you sure you want to delete this category?");
+  try {
+    const isYes = await showConfirmDialog("Are you sure you want to delete this category?");
+  }catch(err) {
+    throw err;
+  }
   if(isYes) {
     try {
       const result = await dbDelete("Categories", categoryID);
       return result.changes === 1;
     }catch(err) {
-      console.log(err);
-      return false;
+      throw err;
     }
   }
 }
@@ -381,8 +387,12 @@ document.querySelector("#topics").onclick = async function(e) {
     const isAdd = e.target.className.match("fa-plus");
     if(isDelete) {
       const categoryID = categoryElement.dataset.id;
-      const wasDeleted = await deleteCategory(categoryID);
-      wasDeleted && categoryElement.remove();
+      try {
+        const wasDeleted = await deleteCategory(categoryID);
+        wasDeleted && categoryElement.remove();
+      }catch(err) {
+        console.log(err);
+      }
     }else if(isAdd) {
       const topicName = document.querySelector("#topics [name=category-name]");
       try {
@@ -571,8 +581,8 @@ async function showOverlay(value="") {
 }
 
 window.onload = async function() {
-  await prepareDB();
   try {
+    await prepareDB();
     const result = await dbAll(`SELECT * FROM Folders ORDER BY name;`);
     createFolderElements(result);
     console.log({folders: result});
