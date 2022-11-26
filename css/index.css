@@ -116,7 +116,15 @@ article {
   padding: 10px;
 }
 
-article .top-corner-buttons {
+#articles h1 {
+  position: sticky;
+  top: 0;
+  padding: 10px;
+  background-color: antiquewhite;
+  z-index: 1;
+}
+
+article .top-corner-buttons, #articles h1 .buttons {
   position: absolute;
   top: 4px;
   right: 4px;

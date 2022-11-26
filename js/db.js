@@ -406,6 +406,15 @@ document.querySelector("#topics").onclick = async function(e) {
       document.querySelector("#articles").innerHTML = "";
       try {
         const result = await dbAll(`SELECT * FROM Articles WHERE topicID = ${topicID}`);
+        const header = document.createElement("H1");
+        header.innerHTML = `
+          ${topicTitleElement.textContent}
+          <div class="buttons">
+            <button data-action="rename-topic">Rename</button>
+            <button data-action="delete-topic">Delete</button>
+          </div>
+        `;
+        document.querySelector("#articles").appendChild(header);
         createArticleElements(result);
         currentState.topicID = topicID;
         document.querySelector("main").classList.remove("hidden");
@@ -495,6 +504,8 @@ document.querySelector("#articles").onclick = async function(e) {
   const articleID = articleElement?.dataset.id;
   const isDelete = e.target.className.match("delete-button");
   const isEdit = e.target.className.match("edit-button");
+  const isTopicRename = e.target.dataset.action === "rename-topic";
+  const isTopicDelete = e.target.dataset.action === "delete-topic";
   if(isDelete) {
     try {
       const result = await dbDelete("Articles", articleID);
@@ -513,6 +524,20 @@ document.querySelector("#articles").onclick = async function(e) {
     }catch(err) {
       console.log(err);
     }
+  }else if(isTopicDelete) {
+    try {
+      const result = await dbDelete("Topics", currentState.topicID);
+      document.querySelector("#articles").innerHTML = "";
+      document.querySelector("main").classList.add("hidden");
+      console.log({topicDelete: result});
+      const articlesDeleteResult = await dbRun(`DELETE FROM Articles WHERE topicID = ${currentState.topicID}`);
+      document.querySelector(`#topics [data-id="${currentState.topicID}"]`).remove();
+      console.log({articlesDelete: articlesDeleteResult});
+    }catch(err) {
+      console.log(err);
+    }
+  }else if(isTopicRename) {
+
   }
 };
 
