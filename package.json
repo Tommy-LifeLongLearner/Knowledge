@@ -1,0 +1,14 @@
+{
+  "name": "knowledge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Tommy <saaditoumifouad@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^24.2.0"
+  }
+}
