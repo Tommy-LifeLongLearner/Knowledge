@@ -1,5 +1,8 @@
 const { app, BrowserWindow } = require('electron');
 const gotTheLock = app.requestSingleInstanceLock();
+// hot reload while developing the app
+const electronReload = require('electron-reload');
+electronReload(__dirname);
 
 const createWindow = () => {
   const win = new BrowserWindow({
