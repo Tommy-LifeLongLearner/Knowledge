@@ -27,6 +27,10 @@
   background: transparent;
 }
 
+.hidden {
+  display: none !important;
+}
+
 body {
   font-family: "Roboto", sans-serif;
 }
@@ -77,12 +81,16 @@ body {
   color: green;
 }
 
+#folders-container [name=add-folder] span:hover {
+  color: lightgreen;
+}
+
 #folders-list {
   display: flex;
   flex-direction: column;
   gap: 4px;
   border-radius: 0 0 4px 4px;
-  height: 428px;
+  max-height: 428px;
   padding: 8px;
   box-shadow: 1px 1px 2px green;
   overflow-y: auto;
@@ -94,6 +102,32 @@ body {
   padding: 8px;
   box-shadow: 1px 1px 2px green;
   height: 100px;
+  cursor: pointer;
+  position: relative;
+}
+
+.folder-card .buttons-toggle,
+.folder-card .buttons-menu {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: green;
+}
+
+.folder-card .buttons-toggle:hover,
+.folder-card .buttons-menu span:hover {
+  color: lightgreen;
+}
+
+.folder-card .buttons-menu {
+  background-color: yellow;
+  padding: 8px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: rgba(255, 228, 196, 1);
+  box-shadow: 2px 2px 3px green;
 }
 
 .folder-card .picture {
@@ -118,6 +152,7 @@ body {
 }
 
 .folder-card .text .title {
+  width: 95%;
   font-size: 1.2em;
   font-weight: bold;
   color: green;
@@ -140,4 +175,69 @@ body {
 
 .folder-card.selected {
   background-color: lightgreen;
+}
+
+#overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#add-folder-form {
+  background-color: bisque;
+  width: 560px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 1px 1px 2px #fff, 0 0 1px lightgreen;
+}
+
+#add-folder-form .folder-card {
+  height: auto;
+  justify-content: center;
+}
+
+#add-folder-form .form-header,
+#add-folder-form .form-footer {
+  height: 40px;
+  background-color: green;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 8px;
+  align-items: center;
+  color: white;
+  font-size: xx-large;
+}
+
+#add-folder-form .picture img {
+  width: 80px;
+}
+
+#add-folder-form .picture img,
+#add-folder-form .form-header span,
+#add-folder-form .form-footer span {
+  cursor: pointer;
+}
+
+#add-folder-form .form-header span:hover,
+#add-folder-form .form-footer span:hover {
+  color: lightgreen;
+}
+
+#add-folder-form input, #add-folder-form textarea {
+  padding: 4px;
+  font: bold 14px Roboto;
+  resize: none;
+  border: 1px solid green;
+  border-radius: 4px;
+}
+
+#add-folder-form textarea {
+  font-size: 10px;
+  height: 80px;
+  margin-top: 4px;
 }

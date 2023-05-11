@@ -15,10 +15,17 @@
     <div id="folders-container">
       <div class="inputs">
         <input type="search" placeholder="Folder name to filter" name="folder-name" />
-        <button name="add-folder"><span class="fa fa-plus-circle"></span></button>
+        <button name="add-folder">
+          <span class="fa fa-plus-circle" data-action="add-folder"></span>
+        </button>
       </div>
       <div id="folders-list">
-        <div class="folder-card">
+        <div class="folder-card" data-id="1" data-action="show-folder">
+          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+          <div class="buttons-menu hidden">
+            <span class="fa fa-pencil" data-action="edit-folder"></span>
+            <span class="fa fa-trash" data-action="delete-folder"></span>
+          </div>
           <div class="picture">
             <img src="./imgs/js.png" alt=""/>
           </div>
@@ -29,7 +36,12 @@
             </div>
           </div>
         </div>
-        <div class="folder-card">
+        <div class="folder-card" data-id="2" data-action="show-folder">
+          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+          <div class="buttons-menu hidden">
+            <span class="fa fa-pencil" data-action="edit-folder"></span>
+            <span class="fa fa-trash" data-action="delete-folder"></span>
+          </div>
           <div class="picture">
             <img src="./imgs/js.png" alt=""/>
           </div>
@@ -40,7 +52,12 @@
             </div>
           </div>
         </div>
-        <div class="folder-card">
+        <div class="folder-card" data-id="3" data-action="show-folder">
+          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+          <div class="buttons-menu hidden">
+            <span class="fa fa-pencil" data-action="edit-folder"></span>
+            <span class="fa fa-trash" data-action="delete-folder"></span>
+          </div>
           <div class="picture">
             <img src="./imgs/js.png" alt=""/>
           </div>
@@ -51,7 +68,12 @@
             </div>
           </div>
         </div>
-        <div class="folder-card">
+        <div class="folder-card" data-id="4" data-action="show-folder">
+          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+          <div class="buttons-menu hidden">
+            <span class="fa fa-pencil" data-action="edit-folder"></span>
+            <span class="fa fa-trash" data-action="delete-folder"></span>
+          </div>
           <div class="picture">
             <img src="./imgs/js.png" alt=""/>
           </div>
@@ -62,62 +84,12 @@
             </div>
           </div>
         </div>
-        <div class="folder-card">
-          <div class="picture">
-            <img src="./imgs/js.png" alt=""/>
+        <div class="folder-card" data-id="5" data-action="show-folder">
+          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+          <div class="buttons-menu hidden">
+            <span class="fa fa-pencil" data-action="edit-folder"></span>
+            <span class="fa fa-trash" data-action="delete-folder"></span>
           </div>
-          <div class="text">
-            <p class="title">Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
-            </div>
-          </div>
-        </div>
-        <div class="folder-card">
-          <div class="picture">
-            <img src="./imgs/js.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
-            </div>
-          </div>
-        </div>
-        <div class="folder-card">
-          <div class="picture">
-            <img src="./imgs/js.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
-            </div>
-          </div>
-        </div>
-        <div class="folder-card">
-          <div class="picture">
-            <img src="./imgs/js.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
-            </div>
-          </div>
-        </div>
-        <div class="folder-card">
-          <div class="picture">
-            <img src="./imgs/js.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
-            </div>
-          </div>
-        </div>
-        <div class="folder-card">
           <div class="picture">
             <img src="./imgs/js.png" alt=""/>
           </div>
@@ -131,8 +103,30 @@
       </div>
     </div>
   </div>
+
+  <div id="overlay" class="hidden">
+    <div id="add-folder-form" class="hidden">
+      <div class="form-header">
+        <span class="fa fa-close" data-action="close-add-folder-form"></span>
+      </div>
+      <div class="folder-card">
+        <div class="picture">
+          <label for="folder-image-input"><img src="./imgs/js.png" alt=""/></label>
+          <input id="folder-image-input" type="file" hidden accept="image/*">
+        </div>
+        <div class="text">
+          <input type="text" value="Very long Title I thinks it's not gonna end soon" maxlength="70" />
+          <textarea maxlength="500">Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</textarea>
+        </div>
+      </div>
+      <div class="form-footer">
+        <span class="fa fa-save" data-action="save-add-folder-form"></span>
+      </div>
+    </div>
+  </div>
     
   <script src="./js/main.js"></script>
+  <script src="./js/folders.js"></script>
 
   </body>
 </html>
