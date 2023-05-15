@@ -203,14 +203,19 @@ body {
 
 #add-folder-form .form-header,
 #add-folder-form .form-footer {
-  height: 40px;
+  height: 48px;
   background-color: green;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0 8px;
   align-items: center;
   color: white;
   font-size: xx-large;
+}
+
+#add-folder-form .form-header {
+  justify-content: flex-start;
+  font-size: 20px;
 }
 
 #add-folder-form .picture img {
@@ -218,14 +223,24 @@ body {
 }
 
 #add-folder-form .picture img,
-#add-folder-form .form-header span,
-#add-folder-form .form-footer span {
+#add-folder-form .form-footer button {
   cursor: pointer;
 }
 
-#add-folder-form .form-header span:hover,
-#add-folder-form .form-footer span:hover {
-  color: lightgreen;
+#add-folder-form .form-footer button {
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 20px;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 110px;
+  align-items: center;
+  background-color: orange;
+  font-weight: 700;
+}
+
+#add-folder-form .form-footer button:hover {
+  color: green;
 }
 
 #add-folder-form input, #add-folder-form textarea {
@@ -240,4 +255,19 @@ body {
   font-size: 10px;
   height: 80px;
   margin-top: 4px;
+}
+
+input.invalid {
+  outline: 2px solid red;
+}
+
+input + p.invalid-message {
+  display: none;
+  font-size: 12px;
+  color: red;
+  padding: 4px;
+}
+
+input.invalid + p.invalid-message {
+  display: block;
 }
