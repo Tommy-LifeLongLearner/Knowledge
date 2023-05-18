@@ -7,108 +7,129 @@
     <link rel="stylesheet" href="./css/roboto.css">
     <link rel="stylesheet" href="./css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/folders.css">
     <title>Knowledge</title>
   </head>
   <body>
 
-  <div id="landing-container">
-    <div id="folders-container">
-      <div class="inputs">
-        <input type="search" placeholder="Folder name to filter" name="folder-name" />
-        <button name="add-folder">
-          <span class="fa fa-plus-circle" data-action="add-folder"></span>
-        </button>
-      </div>
-      <div id="folders-list">
-        <div class="folder-card" data-id="1" data-action="show-folder">
-          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
-          <div class="buttons-menu hidden">
-            <span class="fa fa-pencil" data-action="edit-folder"></span>
-            <span class="fa fa-trash" data-action="delete-folder"></span>
+  <div class="app-container">
+    <div id="app-bar">
+      <h2>Knowledge</h2>
+    </div>
+    <div id="landing-container">
+      <div id="folders-container">
+        <div class="inputs">
+          <input class="group-1" type="search" placeholder="Folder title or description to filter" name="folder-name" />
+          <button class="group-1">
+            <span class="fa fa-plus-circle" data-action="add-folder"></span>
+          </button>
+          <div>
+            <button class="group-2">
+              <span class="no-icon" data-action="select-all-folders">Select All</span>
+            </button>
+            <button class="group-2">
+              <span class="no-icon" data-action="deselect-all-folders">Deselect All</span>
+            </button>
           </div>
-          <div class="picture">
-            <img src="./imgs/html.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">1 Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>1 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+          <button class="group-2">
+            <span class="fa fa-trash" data-action="delete-folders"></span>
+          </button>
+        </div>
+        <div id="folders-list">
+          <div class="folder-card" data-id="1" data-action="show-folder">
+            <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+            <div class="buttons-menu hidden">
+              <span class="fa fa-pencil" data-action="edit-folder"></span>
+              <span class="fa fa-trash" data-action="delete-folder"></span>
+            </div>
+            <div class="picture">
+              <img src="./imgs/html.png" alt=""/>
+              <input type="checkbox" data-action="select-folder">
+            </div>
+            <div class="text">
+              <p class="title">1 Very long Title I thinks it's not gonna end soon</p>
+              <div class="description">
+                <p>1 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="folder-card" data-id="2" data-action="show-folder">
-          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
-          <div class="buttons-menu hidden">
-            <span class="fa fa-pencil" data-action="edit-folder"></span>
-            <span class="fa fa-trash" data-action="delete-folder"></span>
-          </div>
-          <div class="picture">
-            <img src="./imgs/css.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">2 Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>2 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+          <div class="folder-card" data-id="2" data-action="show-folder">
+            <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+            <div class="buttons-menu hidden">
+              <span class="fa fa-pencil" data-action="edit-folder"></span>
+              <span class="fa fa-trash" data-action="delete-folder"></span>
+            </div>
+            <div class="picture">
+              <img src="./imgs/css.png" alt=""/>
+              <input type="checkbox" data-action="select-folder">
+            </div>
+            <div class="text">
+              <p class="title">2 Very long Title I thinks it's not gonna end soon</p>
+              <div class="description">
+                <p>2 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="folder-card" data-id="3" data-action="show-folder">
-          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
-          <div class="buttons-menu hidden">
-            <span class="fa fa-pencil" data-action="edit-folder"></span>
-            <span class="fa fa-trash" data-action="delete-folder"></span>
-          </div>
-          <div class="picture">
-            <img src="./imgs/js.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">3 Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>3 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+          <div class="folder-card" data-id="3" data-action="show-folder">
+            <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+            <div class="buttons-menu hidden">
+              <span class="fa fa-pencil" data-action="edit-folder"></span>
+              <span class="fa fa-trash" data-action="delete-folder"></span>
+            </div>
+            <div class="picture">
+              <img src="./imgs/js.png" alt=""/>
+              <input type="checkbox" data-action="select-folder">
+            </div>
+            <div class="text">
+              <p class="title">3 Very long Title I thinks it's not gonna end soon</p>
+              <div class="description">
+                <p>3 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="folder-card" data-id="4" data-action="show-folder">
-          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
-          <div class="buttons-menu hidden">
-            <span class="fa fa-pencil" data-action="edit-folder"></span>
-            <span class="fa fa-trash" data-action="delete-folder"></span>
-          </div>
-          <div class="picture">
-            <img src="./imgs/html.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">4 Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>4 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+          <div class="folder-card" data-id="4" data-action="show-folder">
+            <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+            <div class="buttons-menu hidden">
+              <span class="fa fa-pencil" data-action="edit-folder"></span>
+              <span class="fa fa-trash" data-action="delete-folder"></span>
+            </div>
+            <div class="picture">
+              <img src="./imgs/html.png" alt=""/>
+              <input type="checkbox" data-action="select-folder">
+            </div>
+            <div class="text">
+              <p class="title">4 Very long Title I thinks it's not gonna end soon</p>
+              <div class="description">
+                <p>4 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="folder-card" data-id="5" data-action="show-folder">
-          <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
-          <div class="buttons-menu hidden">
-            <span class="fa fa-pencil" data-action="edit-folder"></span>
-            <span class="fa fa-trash" data-action="delete-folder"></span>
-          </div>
-          <div class="picture">
-            <img src="./imgs/css.png" alt=""/>
-          </div>
-          <div class="text">
-            <p class="title">5 Very long Title I thinks it's not gonna end soon</p>
-            <div class="description">
-              <p>5 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+          <div class="folder-card" data-id="5" data-action="show-folder">
+            <span class="buttons-toggle fa fa-ellipsis-v" data-action="toggle-menu"></span>
+            <div class="buttons-menu hidden">
+              <span class="fa fa-pencil" data-action="edit-folder"></span>
+              <span class="fa fa-trash" data-action="delete-folder"></span>
+            </div>
+            <div class="picture">
+              <img src="./imgs/css.png" alt=""/>
+              <input type="checkbox" class="w3-checkbox" data-action="select-folder">
+            </div>
+            <div class="text">
+              <p class="title">5 Very long Title I thinks it's not gonna end soon</p>
+              <div class="description">
+                <p>5 Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that Very long Subtitle I thinks it's not gonna end really soon so in case of that</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
+  
   <div id="overlay" class="hidden">
     <div id="add-folder-form" class="hidden">
       <div class="form-header">
         <p>Add New Folder</p>
-        <!-- <span class="fa fa-close" data-action="close-add-folder-form"></span> -->
       </div>
       <div class="folder-card">
         <div class="picture">

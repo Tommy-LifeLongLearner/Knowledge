@@ -1,6 +1,9 @@
+const selectedFolders = [];
+
 document.querySelector("#folders-container").onclick = (e) => {
   const folderCard = e.target.closest(".folder-card");
-  const action = e.target.dataset.action;
+  // get the action from the span element if it was clicked and in case it's father element (button) was clicked
+  const action = e.target.dataset.action || e.target.querySelector("span")?.dataset.action;
   const id = folderCard?.dataset.id;
 
   switch(action) {
@@ -21,6 +24,30 @@ document.querySelector("#folders-container").onclick = (e) => {
     case "delete-folder": {
       deleteFolderData(id);
       folderCard.querySelector(".buttons-menu").classList.add("hidden");
+      break;
+    }
+    case "delete-folders": {
+      deleteFoldersData(selectedFolders);
+      break;
+    }
+    case "select-all-folders": {
+      selectAllFolders();
+      break;
+    }
+    case "deselect-all-folders": {
+      deselectAllFolders();
+      break;
+    }
+    case "select-folder": {
+      const isSelected = e.target.checked;
+      if(isSelected) {
+        const len = selectedFolders.push(id);
+        len === 1 && document.querySelector("#folders-container").classList.add("selecting");
+      }else {
+        selectedFolders.splice(selectedFolders.indexOf(id), 1);
+        selectedFolders.length === 0 && document.querySelector("#folders-container").classList.remove("selecting");
+      }
+      console.log(selectedFolders);
       break;
     }
     default: {
@@ -112,16 +139,32 @@ function handleFolderData(data, id) {
   }
 }
 
+function selectAllFolders() {
+  document.querySelectorAll("#folders-list .folder-card input[type=checkbox]").forEach(folderCard => {
+    !folderCard.checked && folderCard.click();
+  });
+}
+
+function deselectAllFolders() {
+  document.querySelectorAll("#folders-list .folder-card input[type=checkbox]").forEach(folderCard => {
+    folderCard.checked && folderCard.click();
+  });
+}
+
 function saveFolderData(data) {
-  console.log("save folder data (add)", data);
+  console.log("save created folder data: ", data);
   document.querySelector("#add-folder-form [data-action=close-add-folder-form]").click();
 }
 
 function deleteFolderData(id) {
-  console.log("delete folder id: " + id)
+  console.log("delete folder with id: " + id)
+}
+
+function deleteFoldersData(ids) {
+  console.log("delete folders with ids: " + ids)
 }
 
 function updateFolderData(id, data) {
-  console.log("save folder data (update)", {id, data});
+  console.log(`save updated folder data with id: ${id}, data: `, data);
   document.querySelector("#add-folder-form [data-action=close-add-folder-form]").click();
 }

@@ -1,0 +1,271 @@
+#folders-container {
+  width: 500px;
+}
+
+#folders-container .group-2 {
+  display: none;
+}
+
+#folders-container.selecting .picture img {
+  visibility: hidden;
+}
+
+#folders-container.selecting .inputs {
+  justify-content: space-between;
+}
+
+#folders-container.selecting .group-1,
+#folders-container.selecting .buttons-toggle {
+  display: none;
+}
+
+#folders-container.selecting .group-2 {
+  display: inline-block;
+}
+
+#folders-container .inputs {
+  padding: 8px;
+  display: flex;
+  justify-content: space-around;
+  box-shadow: 1px 1px 2px green;
+  border-radius: 8px 8px 0 0;
+}
+
+#folders-container [name=folder-name] {
+  width: 90%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid green;
+}
+
+#folders-container .inputs span {
+  padding: 2px;
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-color: green;
+  cursor: pointer;
+}
+
+#folders-container .inputs .no-icon {
+  width: auto;
+  font-size: 20px;
+}
+
+#folders-container .inputs span {
+  font-size: 30px;
+  color: green;
+}
+
+#folders-container .inputs span:hover {
+  color: lightgreen;
+}
+
+#folders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 0 0 4px 4px;
+  max-height: 428px;
+  padding: 8px;
+  box-shadow: 1px 1px 2px green;
+  overflow-y: auto;
+}
+
+.folder-card {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  box-shadow: 1px 1px 2px green;
+  height: 100px;
+  cursor: pointer;
+  position: relative;
+}
+
+.folder-card .buttons-toggle,
+.folder-card .buttons-menu {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: green;
+}
+
+.folder-card .buttons-toggle:hover,
+.folder-card .buttons-menu span:hover {
+  color: lightgreen;
+}
+
+.folder-card .buttons-menu {
+  background-color: yellow;
+  padding: 8px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: rgba(255, 228, 196, 1);
+  box-shadow: 2px 2px 3px green;
+}
+
+.folder-card .picture {
+  padding: 8px;
+  position: relative;
+}
+
+.folder-card .picture img {
+  height: 80px;
+  border-radius: 8px;
+  border: 5px solid #fff;
+  outline: 5px solid green;
+  vertical-align: middle;
+}
+
+.folder-card .picture input[type=checkbox] {
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+}
+
+.folder-card .picture input[type=checkbox]:checked {
+  visibility: visible;
+}
+
+.folder-card .picture:hover input[type=checkbox] {
+  visibility: visible;
+}
+
+.folder-card .text {
+  width: 80%;
+  height: 94%;
+  padding-left: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.folder-card .text .title {
+  width: 95%;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: green;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 8px;
+}
+
+.folder-card .text .description {
+  font-size: 0.8em;
+  color: rgb(94, 111, 80);
+  height: 45px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-card.selected {
+  background-color: lightgreen;
+}
+
+#overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#add-folder-form {
+  background-color: bisque;
+  width: 560px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 1px 1px 2px #fff, 0 0 1px lightgreen;
+}
+
+#add-folder-form .folder-card {
+  height: auto;
+  justify-content: center;
+}
+
+#add-folder-form .form-header,
+#add-folder-form .form-footer {
+  height: 48px;
+  background-color: green;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+  align-items: center;
+  color: white;
+  font-size: xx-large;
+}
+
+#add-folder-form .form-header {
+  justify-content: flex-start;
+  font-size: 20px;
+}
+
+#add-folder-form .picture img {
+  width: 80px;
+}
+
+#add-folder-form .picture img,
+#add-folder-form .form-footer button {
+  cursor: pointer;
+}
+
+#add-folder-form .form-footer button {
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 20px;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 110px;
+  align-items: center;
+  background-color: lightgreen;
+  font-weight: 700;
+}
+
+#add-folder-form .form-footer button:hover {
+  color: green;
+}
+
+#add-folder-form input, #add-folder-form textarea {
+  padding: 4px;
+  font: bold 14px Roboto;
+  resize: none;
+  border: 1px solid green;
+  border-radius: 4px;
+}
+
+#add-folder-form textarea {
+  font-size: 10px;
+  height: 80px;
+  margin-top: 4px;
+}
+
+input.invalid {
+  outline: 2px solid red;
+}
+
+input + p.invalid-message {
+  display: none;
+  font-size: 12px;
+  color: red;
+  padding: 4px;
+}
+
+input.invalid + p.invalid-message {
+  display: block;
+}
