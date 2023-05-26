@@ -52,8 +52,10 @@ document.querySelector("#folders-container").onclick = (e) => {
     }
     default: {
       if(folderCard) {
-        // show the clicked folder
-        console.log("show folder id: " + id)
+        // access the clicked folder
+        console.log("access folder id: " + id)
+        selectedFolders.splice(selectAllFolders.length);
+        deselectAllFolders();
         folderCard.querySelector(".buttons-menu").classList.add("hidden");
       }
     }
