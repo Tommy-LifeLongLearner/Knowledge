@@ -194,6 +194,14 @@
   box-shadow: 1px 1px 2px #fff, 0 0 1px lightgreen;
 }
 
+#add-folder-form:not([data-folder-id]) .edit-header {
+  display: none;
+}
+
+#add-folder-form[data-folder-id] .add-header {
+  display: none;
+}
+
 #add-folder-form .folder-card {
   height: auto;
   justify-content: center;
