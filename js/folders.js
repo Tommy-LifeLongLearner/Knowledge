@@ -1,4 +1,5 @@
 const selectedFolders = [];
+const scrolls = [];
 
 document.querySelector("#folders-container").onclick = (e) => {
   const folderCard = e.target.closest(".folder-card");
@@ -169,4 +170,44 @@ function deleteFoldersData(ids) {
 function updateFolderData(id, data) {
   console.log(`save updated folder data with id: ${id}, data: `, data);
   document.querySelector("#add-folder-form [data-action=close-add-folder-form]").click();
+}
+
+// a handler for the scrolling horizontal bar of folders
+document.querySelector(".folders-menu-container").onclick = (e) => {
+  const action = e.target.dataset.action;
+  const foldersMenuElement = document.querySelector(".folders-menu");
+  const foldersMenuElements = Array.from(foldersMenuElement.querySelectorAll("li"));
+  let isScrolling = false;
+
+  switch(action) {
+    case "scroll-folders-menu-left": {
+      foldersMenuElement.scrollTo(scrolls.pop(), 0);
+      break;
+    }
+    case "scroll-folders-menu-right": {
+      for(let li of foldersMenuElements) {
+        if(
+          li.offsetLeft <= foldersMenuElement.scrollLeft + foldersMenuElement.clientWidth && 
+          li.offsetLeft + li.offsetWidth >= foldersMenuElement.scrollLeft + foldersMenuElement.clientWidth
+        ) {
+          // add the scrolls so when we go back we use them as a stack (LIFO)
+          if(scrolls[scrolls.length - 1] === foldersMenuElement.scrollLeft) {
+            return;
+          }
+          scrolls.push(foldersMenuElement.scrollLeft);
+          foldersMenuElement.scrollTo(li.offsetLeft - 4, 0);
+          isScrolling = true;
+          break;
+        }
+      }
+      if(!isScrolling) {
+        if(scrolls[scrolls.length - 1] === foldersMenuElement.scrollLeft + foldersMenuElement.clientWidth - 4) {
+          return;
+        }
+        scrolls.push(foldersMenuElement.scrollLeft + foldersMenuElement.clientWidth - 4);
+        foldersMenuElement.scrollBy(foldersMenuElement.clientWidth - 4, 0);
+      }
+      break;
+    }
+  }
 }
